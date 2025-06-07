@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuis Pancasila</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fdfdfd;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #cc0000;
+      margin-bottom: 1rem;
+    }
+
+    .quiz-container {
+      background: #fff0f0;
+      border-left: 6px solid #cc0000;
+      border-radius: 10px;
+      padding: 1.5rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .options button {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.6rem 1rem;
+      background-color: #cc0000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .options button:hover {
+      background-color: #990000;
+    }
+
+    .timer {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #555;
+    }
+
+    #result {
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    footer a {
+      color: #cc0000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      color: #990000;
+    }
+
+    /* Box style for contact and suggestion */
+    .contact-box, .suggestion-box {
+      background: #fff5f5;
+      border: 2px solid #cc0000;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-top: 1rem;
+      text-align: left;
+      box-shadow: 0 4px 10px rgba(204, 0, 0, 0.15);
+    }
+
+    .contact-box p, .suggestion-box p {
+      margin: 0.3rem 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    /* Suggestion form */
+    form {
+      margin-top: 0.7rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: #cc0000;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      resize: vertical;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #cc0000;
+      box-sizing: border-box;
+    }
+
+    button.send-suggestion {
+      margin-top: 0.6rem;
+      background-color: #cc0000;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    button.send-suggestion:hover {
+      background-color: #990000;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      .quiz-container, footer {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Kuis Pancasila</h1>
+  <div class="quiz-container">
+    <div class="question" id="question">Memuat soal...</div>
+    <div class="options" id="options"></div>
+    <div class="timer" id="timer">Sisa waktu: 10 detik</div>
+    <div id="result"></div>
+  </div>
+
+  <footer>
+    <p><a href="index.html">⬅ Kembali ke Beranda</a></p>
+
+    <div class="contact-box">
+      <h3>Kontak Person jika ada kendala:</h3>
+      <p>Email: <a href="mailto:support@contohweb.com">support@contohweb.com</a></p>
+      <p>WhatsApp: <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">+62 812-3456-7890</a></p>
+    </div>
+
+    <div class="suggestion-box">
+      <h3>Kirim Masukan / Saran</h3>
+      <form action="mailto:putrimashitanuriyadi@icloud.com" method="POST" enctype="text/plain" onsubmit="return validateForm()">
+        <label for="suggestion">Tulis saran Anda:</label>
+        <textarea id="suggestion" name="Saran" placeholder="Masukkan saran Anda di sini..." required></textarea>
+        <button type="submit" class="send-suggestion">Kirim Saran</button>
+      </form>
+    </div>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        question: "Apa sila pertama Pancasila?",
+        options: ["Kemanusiaan", "Ketuhanan", "Persatuan", "Kerakyatan"],
+        answer: "Ketuhanan"
+      },
+      {
+        question: "Apa lambang sila kedua?",
+        options: ["Bintang", "Pohon Beringin", "Rantai Emas", "Kepala Banteng"],
+        answer: "Rantai Emas"
+      },
+      {
+        question: "Apa arti dari sila ke-3?",
+        options: ["Persatuan Indonesia", "Demokrasi", "Keadilan", "Ketuhanan"],
+        answer: "Persatuan Indonesia"
+      },
+      {
+        question: "Sila keempat berbunyi...?",
+        options: ["Kemanusiaan yang adil", "Kerakyatan yang dipimpin oleh hikmat", "Persatuan Indonesia", "Keadilan sosial"],
+        answer: "Kerakyatan yang dipimpin oleh hikmat"
+      },
+      {
+        question: "Lambang sila ke-5 adalah?",
+        options: ["Padi dan Kapas", "Bintang", "Rantai", "Beringin"],
+        answer: "Padi dan Kapas"
+      },
+      {
+        question: "Sila kedua mengandung nilai...?",
+        options: ["Persatuan", "Kemanusiaan", "Demokrasi", "Ketuhanan"],
+        answer: "Kemanusiaan"
+      },
+      {
+        question: "Sila keempat mendorong sistem...?",
+        options: ["Otoriter", "Monarki", "Demokrasi", "Teokrasi"],
+        answer: "Demokrasi"
+      },
+      {
+        question: "Bintang sebagai simbol sila pertama berarti...?",
+        options: ["Agama", "Kemanusiaan", "Persatuan", "Kerakyatan"],
+        answer: "Agama"
+      },
+      {
+        question: "Apa dasar negara Indonesia?",
+        options: ["UUD 1945", "Pancasila", "Proklamasi", "Bendera Merah Putih"],
+        answer: "Pancasila"
+      },
+      {
+        question: "Siapa penggagas Pancasila pertama kali?",
+        options: ["Soekarno", "Hatta", "Syahrir", "Tan Malaka"],
+        answer: "Soekarno"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 10;
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        document.getElementById('question').innerText = 'Kuis selesai!';
+        document.getElementById('options').innerHTML = '';
+        document.getElementById('timer').innerText = '';
+        document.getElementById('result').innerText = `Skor Anda: ${score} dari ${questions.length}`;
+        return;
+      }
+
+      const q = questions[currentQuestion];
+      document.getElementById('question').innerText = q.question;
+      document.getElementById('options').innerHTML = '';
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.innerText = option;
+        btn.onclick = () => selectAnswer(option);
+        document.getElementById('options').appendChild(btn);
+      });
+
+      timeLeft = 10;
+      document.getElementById('timer').innerText = `Sisa waktu: ${timeLeft} detik`;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = `Sisa waktu: ${timeLeft} detik`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          currentQuestion++;
+          showQuestion();
+        }
+      }, 1000);
+    }
+
+    function selectAnswer(option) {
+      clearInterval(timer);
+      if (option === questions[currentQuestion].answer) {
+        score++;
+      }
+      currentQuestion++;
+      showQuestion();
+    }
+
+    function validateForm() {
+      const textarea = document.getElementById('suggestion');
+      if (!textarea.value.trim()) {
+        alert('Mohon isi saran Anda sebelum mengirim.');
+        return false;
+      }
+      return true;
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
